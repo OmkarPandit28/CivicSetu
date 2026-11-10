@@ -18,3 +18,4 @@ export * from './StatCard';
 export * from './PageHeader';
 export * from './Pagination';
 export * from './Tooltip';
+export * from './ErrorBoundary';

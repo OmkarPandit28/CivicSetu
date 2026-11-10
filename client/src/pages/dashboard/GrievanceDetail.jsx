@@ -16,6 +16,7 @@ import { useAuth } from '../../context/AuthContext';
 import Textarea from '../../components/ui/Textarea';
 import SlaBadge from '../../components/ui/SlaBadge';
 import { formatExpectedDate } from '../../utils/dateUtils';
+import LocationPicker from '../../components/grievance/LocationPicker';
 import {
   ArrowLeft,
   Copy,
@@ -26,6 +27,7 @@ import {
   Building,
   UserCheck,
   FileCheck2,
+  CheckCircle2,
   Star,
   Maximize2,
   ExternalLink,
@@ -66,9 +68,13 @@ export const GrievanceDetail = () => {
     setError('');
     try {
       const response = await grievanceService.getGrievanceById(id);
-      setGrievance(response.data.grievance);
+      const data = response?.data?.grievance || response?.grievance || response?.data || response;
+      if (!data || !data.title) {
+        throw new Error('Grievance details are incomplete or not found.');
+      }
+      setGrievance(data);
     } catch (err) {
-      setError(err.response?.data?.message || 'Could not load grievance details.');
+      setError(err.response?.data?.message || err.message || 'Could not load grievance details.');
     } finally {
       setLoading(false);
     }
@@ -447,7 +453,7 @@ export const GrievanceDetail = () => {
                 </div>
               </div>
             </Card>
-          ) : grievance.status === 'Resolved' && user?.role === 'citizen' ? (
+          ) : grievance.status === 'Resolved' && user?.role === 'citizen' && (grievance.isOwner !== false) ? (
             /* Interactive Feedback Form (Resolved & Unrated) */
             <Card className="p-5 border-amber-200 dark:border-amber-900/60 bg-gradient-to-br from-amber-50/30 via-white to-white dark:from-amber-950/20 dark:via-slate-900 dark:to-slate-900 shadow-md">
               <CardHeader className="p-0 pb-3 mb-3 border-b border-amber-100 dark:border-amber-900/40">

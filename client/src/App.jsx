@@ -56,18 +56,23 @@ import {
   AdminNotifications,
 } from './pages/dashboard/AdminPages';
 
+import { ErrorBoundary } from './components/ui/ErrorBoundary';
+
 export function App() {
   return (
-    <ThemeProvider>
-      <ToastProvider>
-        <AuthProvider>
-          <NotificationProvider>
-            <BrowserRouter>
+    <ErrorBoundary>
+      <ThemeProvider>
+        <ToastProvider>
+          <AuthProvider>
+            <NotificationProvider>
+              <BrowserRouter>
               <Routes>
                 {/* Public Layout Routes */}
                 <Route path="/" element={<PublicLayout />}>
                   <Route index element={<Landing />} />
                   <Route path="track" element={<Track />} />
+                  <Route path="track/:trackingId" element={<Track />} />
+                  <Route path="grievances/:id" element={<Track />} />
                   <Route path="how-it-works" element={<HowItWorks />} />
                   <Route path="about-ai" element={<HowItWorks />} />
                   <Route path="login" element={<Login />} />
@@ -83,6 +88,9 @@ export function App() {
 
                     {/* Common Profile Page for all authenticated roles */}
                     <Route path="profile" element={<Profile />} />
+
+                    {/* Universal authenticated grievance detail route */}
+                    <Route path="grievances/:id" element={<GrievanceDetail />} />
 
                     {/* Citizen Routes (Citizen & Admin access) */}
                     <Route element={<RoleRoute allowedRoles={['citizen', 'admin']} />}>
@@ -107,6 +115,7 @@ export function App() {
                     <Route element={<RoleRoute allowedRoles={['admin']} />}>
                       <Route path="admin" element={<AdminDashboard />} />
                       <Route path="admin/grievances" element={<AdminGrievances />} />
+                      <Route path="admin/grievances/:id" element={<GrievanceDetail />} />
                       <Route path="admin/escalated" element={<AdminEscalated />} />
                       <Route path="admin/analytics" element={<AdminAnalytics />} />
                       <Route path="admin/map" element={<AdminMap />} />
@@ -122,6 +131,7 @@ export function App() {
         </AuthProvider>
       </ToastProvider>
     </ThemeProvider>
+    </ErrorBoundary>
   );
 }
 

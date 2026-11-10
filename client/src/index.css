@@ -4,19 +4,24 @@
 @tailwind utilities;
 
 @layer base {
-  * {
+
+* {
     @apply border-slate-200 dark:border-slate-800;
-  }
+    }
 
-  html {
-    scroll-behavior: smooth;
-    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  }
+html {
+scroll-behavior: smooth;
+font-family: ‘Plus Jakarta Sans’, system-ui, -apple-system, sans-serif;
+}
 
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
-    letter-spacing: -0.015em;
-  }
+body {
+@apply bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100;
+}
+
+h1, h2, h3, h4, h5, h6 {
+font-family: ‘Outfit’, ‘Plus Jakarta Sans’, sans-serif;
+letter-spacing: -0.015em;
+}
 }
 
 /* Custom scrollbars */

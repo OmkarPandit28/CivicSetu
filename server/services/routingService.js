@@ -1,4 +1,4 @@
-import { DEPARTMENTS } from '../utils/constants.js';
+import { DEPARTMENTS, SLA_HOURS } from '../utils/constants.js';
 import Department from '../models/Department.js';
 import User from '../models/User.js';
 import Grievance from '../models/Grievance.js';

@@ -24,6 +24,16 @@ const startServer = async () => {
     console.log(`=================================================\n`);
   });
 
+  server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      console.error(`❌ Port ${PORT} is already in use. Terminating process so nodemon can restart cleanly.`);
+      process.exit(1);
+    } else {
+      console.error('Server listen error:', err);
+      process.exit(1);
+    }
+  });
+
   // Handle unhandled promise rejections
   process.on('unhandledRejection', (err) => {
     console.error('Unhandled Promise Rejection:', err);
@@ -32,6 +42,7 @@ const startServer = async () => {
   // Handle uncaught exceptions
   process.on('uncaughtException', (err) => {
     console.error('Uncaught Exception:', err);
+    process.exit(1);
   });
 };
 

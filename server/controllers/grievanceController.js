@@ -291,23 +291,22 @@ export const getGrievanceById = asyncHandler(async (req, res) => {
   }
 
   // Authorization check
-  const isOwner = req.user.role === ROLES.CITIZEN && grievance.citizen?._id?.toString() === req.user._id.toString();
-  const isAdmin = req.user.role === ROLES.ADMIN;
-
-  const officerDeptId = req.user.department?._id?.toString() || req.user.department?.toString();
-  const grievanceDeptId = grievance.department?._id?.toString() || grievance.department?.toString();
-  const isOfficerInDept = req.user.role === ROLES.OFFICER && (
-    !officerDeptId ||
-    officerDeptId === grievanceDeptId ||
-    grievance.assignedOfficer?._id?.toString() === req.user._id.toString()
+  const isOwner = req.user.role === ROLES.CITIZEN && (
+    grievance.citizen?._id?.toString() === req.user._id.toString() ||
+    grievance.citizen?.toString() === req.user._id.toString()
   );
+  const isAdmin = req.user.role === ROLES.ADMIN;
+  const isOfficer = req.user.role === ROLES.OFFICER;
+  const isCitizen = req.user.role === ROLES.CITIZEN;
 
-  if (!isOwner && !isAdmin && !isOfficerInDept) {
+  if (!isOwner && !isAdmin && !isOfficer && !isCitizen) {
     throw new ApiError(403, 'You are not authorized to access this grievance ticket.');
   }
 
-  // Hide internal entries for citizen
+  // Hide internal entries for citizen viewers
   const result = grievance.toObject();
+  result.isOwner = Boolean(isOwner);
+
   if (req.user.role === ROLES.CITIZEN) {
     result.timeline = (result.timeline || []).filter((t) => !t.isInternal);
     result.remarks = (result.remarks || []).filter((r) => !r.isInternal);
