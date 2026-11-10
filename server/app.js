@@ -11,6 +11,17 @@ import authRoutes from './routes/authRoutes.js';
 
 const app = express();
 
+// API Root Route
+app.get('/', (req, res) => {
+  return apiResponse(res, 200, 'Welcome to CivicSetu Municipal Grievance API', {
+    status: 'UP',
+    service: 'CivicSetu Backend',
+    version: '1.0.0',
+    healthCheck: '/api/health',
+    publicStats: '/api/public/stats'
+  });
+});
+
 // Security HTTP headers
 app.use(
   helmet({
