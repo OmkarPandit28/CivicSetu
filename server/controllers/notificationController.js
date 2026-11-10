@@ -1,5 +1,5 @@
 import Notification from '../models/Notification.js';
-import { apiResponse } from '../utils/ApiResponse.js';
+import { apiResponse } from '../utils/apiResponse.js';
 import { ApiError } from '../utils/ApiError.js';
 
 /**
